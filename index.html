@@ -55,6 +55,10 @@ tr.total td{font-weight:700;border-top:2px solid var(--navy2);border-bottom:2px 
 .panel{background:var(--panel);border:1px solid var(--line);padding:18px 20px}
 .panel h3{font-size:18px;margin-bottom:10px}
 .tw{overflow-x:auto}
+.h2row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;font-size:13px;letter-spacing:.04em;color:#fff;background:var(--navy2);border:0;border-radius:3px;padding:9px 16px;cursor:pointer}
+.btn:hover{background:var(--teal)}
+.btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .inputs{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:18px}
 .sw{display:flex;align-items:center;gap:10px;margin-top:12px;cursor:pointer;text-transform:none;letter-spacing:0}
 .sw input{position:absolute;opacity:0;width:0;height:0}
@@ -122,7 +126,7 @@ footer{margin:48px 0 32px;padding-top:16px;border-top:1px solid var(--line);font
 
   <section>
     <div class="eyebrow">Live model</div>
-    <h2>Move the four inputs, everything below recomputes</h2>
+    <div class="h2row"><h2>Move the four inputs, everything below recomputes</h2><button type="button" id="reset" class="btn">Reset to base case</button></div>
     <p class="lede">Renovation budget includes the 1,400 sqft extension; a 10% contingency can be switched on or off. Fees are fixed at market: 4% DLD, 2% + VAT each side, 4,200 admin, 150k marketing and staging, 75k/yr service charge (estimate), 30k/yr utilities. GP management fee 2% of purchase price, paid at acquisition.</p>
     <div class="inputs">
       <div class="inp"><label>Purchase price <output id="o_p"></output></label><input type="range" id="i_p" min="21000000" max="24500000" step="100000" value="23000000"></div>
@@ -257,5 +261,7 @@ function render(){
   <tr><td>30% project IRR</td><td>${A(need(0.3))}</td><td>${Math.round(need(0.3)/F.bua).toLocaleString()}</td></tr>
   <tr class="total"><td>Renovation overrun the base profit absorbs</td><td>${A(Math.max(c.profit,0))}</td><td></td></tr></tbody>`;
 }
-['i_p','i_r','i_x','i_h','i_c'].forEach(id=>$(id).addEventListener('input',render));render();
+['i_p','i_r','i_x','i_h','i_c'].forEach(id=>$(id).addEventListener('input',render));
+const BASE={i_p:23000000,i_r:10000000,i_x:45000000,i_h:12};
+$('reset').addEventListener('click',()=>{Object.entries(BASE).forEach(([k,v])=>$(k).value=v);$('i_c').checked=true;render();});render();
 </script>
